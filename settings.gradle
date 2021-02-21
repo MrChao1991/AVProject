@@ -1,3 +1,5 @@
+include ':CastScreenPlayApp'
+include ':CastScreenPushApp'
 include ':mediacodecdemo'
-include ':app'
+include ':EsSocket'
 rootProject.name = "AVProject"
