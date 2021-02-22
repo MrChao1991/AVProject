@@ -14,6 +14,8 @@ class PlayerManager : SocketServerListener{
         private const val TAG = "PlayerManager"
 
         private const val PORT = 7801
+        private const val HEIGHT = 1920
+        private const val WIDTH = 1080
     }
 
     private var mediaCodec : MediaCodec ? = null
@@ -34,8 +36,8 @@ class PlayerManager : SocketServerListener{
 
         // 创建H265 解码的MediaCodec
         mediaCodec = MediaCodec.createDecoderByType(MediaFormat.MIMETYPE_VIDEO_HEVC)
-        val format = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_HEVC, 1080, 1920)
-        format.setInteger(MediaFormat.KEY_BIT_RATE, 1080 * 1920)// 设置比特率
+        val format = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_HEVC, WIDTH, HEIGHT)
+        format.setInteger(MediaFormat.KEY_BIT_RATE, WIDTH * HEIGHT)// 设置比特率
         format.setInteger(MediaFormat.KEY_FRAME_RATE, 20) // 设置帧率
         format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 1) // 设置多长时间一个关键帧 （I 帧）， 在解码的时候设置无效
 
