@@ -12,7 +12,7 @@ object FrameUtils {
     private val HEX_CHAR_TABLE = charArrayOf( '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F')
 
 
-    fun writeBytes(byteArray: ByteArray, fileName : String = "video-file.h264" ) {
+    fun writeBytes(byteArray: ByteArray, fileName : String ) {
         var writer : FileOutputStream ? = null
         try {
             writer = FileOutputStream("${Environment.getExternalStorageDirectory()}/$fileName", true)
@@ -29,7 +29,7 @@ object FrameUtils {
         }
     }
 
-    fun writeString(byteArray: ByteArray, fileName : String = "video-text-file.txt") : String {
+    fun writeString(byteArray: ByteArray, fileName : String) : String {
         val sb =  StringBuilder()
 
         for (b in byteArray) {
