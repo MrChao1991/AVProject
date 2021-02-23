@@ -1,14 +1,16 @@
 package com.cfox.castscreenplayapp
 
+import android.content.Context
 import android.media.MediaCodec
 import android.media.MediaFormat
 import android.util.Log
 import android.view.Surface
+import android.widget.Toast
 import com.cfox.essocket.web.SocketServerListener
 import com.cfox.essocket.web.WebSocketServerManager
 import java.nio.ByteBuffer
 
-class PlayerManager : SocketServerListener{
+class PlayerManager(val context: Context) : SocketServerListener{
 
     companion object {
         private const val TAG = "PlayerManager"
@@ -46,7 +48,9 @@ class PlayerManager : SocketServerListener{
     }
 
     override fun onMessage(message: String?) {
-
+        message?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onMessage(message: ByteBuffer?) {

@@ -14,7 +14,7 @@ class WebSocketClineManager : SocketClineListener {
     private var socketCline : SocketCline ? = null
     private var socketClineListener : SocketClineListener ? = null
 
-    fun connectServer(host: String, port: Int, socketClineListener: SocketClineListener) {
+    fun connectServer(host: String, port: Int, socketClineListener: SocketClineListener?) {
         this.socketClineListener = socketClineListener
         val url = URI("ws://$host:$port")
         socketCline = SocketCline(url,this)
@@ -55,6 +55,7 @@ class WebSocketClineManager : SocketClineListener {
     fun sendData(msg: String) {
         socketCline?.apply {
             if (this.isOpen && !this.isClosed && !this.isClosing) {
+                Log.d(TAG, "sendData: $msg")
                 this.send(msg)
             }
         }

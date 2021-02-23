@@ -21,8 +21,8 @@ class ScreenRecorderManager(mediaProjection: MediaProjection) : Runnable {
 //        val mediaFormat = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_HEVC, WIDTH, HEIGHT)// h265
         val mediaFormat = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, WIDTH, HEIGHT) // h264
         mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface)
-        mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, WIDTH * HEIGHT * 4) // 影响清晰度
-        mediaFormat.setInteger(MediaFormat.KEY_FRAME_RATE, 30)
+        mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, WIDTH * HEIGHT) // 影响清晰度
+        mediaFormat.setInteger(MediaFormat.KEY_FRAME_RATE, 20)
         mediaFormat.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 1)
 //        mediaFormat.setInteger(MediaFormat.KEY_PROFILE, MediaCodecInfo.CodecProfileLevel.AVCProfileHigh)
 //        mediaFormat.setInteger(MediaFormat.KEY_LEVEL, MediaCodecInfo.CodecProfileLevel.AVCProfileMain)

@@ -33,10 +33,12 @@ class SocketServer(port : Int, private val socketServerListener: SocketServerLis
     }
 
     override fun onMessage(conn: WebSocket?, message: String?) {
+        Log.d(TAG, "onMessage: str : $message")
         socketServerListener.onMessage(message)
     }
 
     override fun onMessage(conn: WebSocket?, message: ByteBuffer?) {
+        Log.d(TAG, "onMessage: byte : $message")
         socketServerListener.onMessage(message)
     }
 

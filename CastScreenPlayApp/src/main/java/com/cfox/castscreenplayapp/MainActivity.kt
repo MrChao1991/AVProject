@@ -2,12 +2,17 @@ package com.cfox.castscreenplayapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 
 class MainActivity : AppCompatActivity() {
 
-    private val playerManager  = PlayerManager()
+    companion object {
+        private const val TAG = "PlayMainActivity"
+    }
+
+    private val playerManager  = PlayerManager(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -19,6 +24,7 @@ class MainActivity : AppCompatActivity() {
                 width: Int,
                 height: Int
             ) {
+                Log.d(TAG, "surfaceChanged: =====>")
                 val surface = holder.surface
                 playerManager.startPlay(surface)
 
