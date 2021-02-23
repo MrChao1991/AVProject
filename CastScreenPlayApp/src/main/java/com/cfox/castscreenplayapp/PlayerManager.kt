@@ -75,7 +75,7 @@ class PlayerManager : SocketServerListener{
             // 取出解码数据
             val bufferInfo = MediaCodec.BufferInfo()
             var outIndex = it.dequeueOutputBuffer(bufferInfo, 100000)
-            while (outIndex > 0) {
+            while (outIndex >= 0) {
                 it.releaseOutputBuffer(outIndex, true)
                 outIndex = it.dequeueOutputBuffer(bufferInfo, 0)
             }
