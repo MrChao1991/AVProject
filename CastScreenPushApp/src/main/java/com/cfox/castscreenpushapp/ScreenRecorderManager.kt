@@ -10,7 +10,7 @@ import android.util.Log
 import com.cfox.essocket.web.WebSocketClineManager
 import java.nio.ByteBuffer
 
-class ScreenRecorderManager(context: Context, mediaProjection: MediaProjection) : Runnable {
+class ScreenRecorderManager(context: Context, private val mediaProjection: MediaProjection) : Runnable {
 
     companion object {
         private const val TAG = "ScreenRecorderManager"
@@ -41,10 +41,7 @@ class ScreenRecorderManager(context: Context, mediaProjection: MediaProjection) 
         mediaCodec = MediaCodec.createEncoderByType(MediaFormat.MIMETYPE_VIDEO_HEVC)
 //        mediaCodec = MediaCodec.createEncoderByType(MediaFormat.MIMETYPE_VIDEO_AVC)
         mediaCodec.configure(mediaFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE)
-        val surface = mediaCodec.createInputSurface()
 
-        mediaProjection.createVirtualDisplay(
-                "-display", WIDTH, HEIGHT, 1, DisplayManager.VIRTUAL_DISPLAY_FLAG_PUBLIC, surface, null, null)
 
     }
 
@@ -68,6 +65,9 @@ class ScreenRecorderManager(context: Context, mediaProjection: MediaProjection) 
 
     override fun run() {
         Log.d(TAG, "run: ......$recording")
+        val surface = mediaCodec.createInputSurface()
+        mediaProjection.createVirtualDisplay(
+                "-display", WIDTH, HEIGHT, 1, DisplayManager.VIRTUAL_DISPLAY_FLAG_PUBLIC, surface, null, null)
         mediaCodec.start()
         val mediaCodecInfo = MediaCodec.BufferInfo()
         while (recording) {
