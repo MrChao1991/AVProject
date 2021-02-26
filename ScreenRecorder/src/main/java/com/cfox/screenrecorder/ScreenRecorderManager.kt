@@ -6,7 +6,7 @@ import android.media.MediaCodecInfo
 import android.media.MediaFormat
 import android.media.projection.MediaProjection
 
-class ScreenRecorderManager(mediaProjection: MediaProjection) : Runnable {
+class ScreenRecorderManager(private val mediaProjection: MediaProjection) : Runnable {
 
     companion object {
         private const val WIDTH = 1080
@@ -32,10 +32,6 @@ class ScreenRecorderManager(mediaProjection: MediaProjection) : Runnable {
 //        mediaCodec = MediaCodec.createEncoderByType(MediaFormat.MIMETYPE_VIDEO_HEVC)
         mediaCodec = MediaCodec.createEncoderByType(MediaFormat.MIMETYPE_VIDEO_AVC)
         mediaCodec.configure(mediaFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE)
-        val surface = mediaCodec.createInputSurface()
-
-        mediaProjection.createVirtualDisplay(
-                "-display", WIDTH, HEIGHT, 1, DisplayManager.VIRTUAL_DISPLAY_FLAG_PUBLIC, surface, null, null)
 
     }
 
@@ -51,6 +47,11 @@ class ScreenRecorderManager(mediaProjection: MediaProjection) : Runnable {
     }
 
     override fun run() {
+        val surface = mediaCodec.createInputSurface()
+
+        mediaProjection.createVirtualDisplay(
+                "-display", WIDTH, HEIGHT, 1, DisplayManager.VIRTUAL_DISPLAY_FLAG_PUBLIC, surface, null, null)
+
         mediaCodec.start()
         val mediaCodecInfo = MediaCodec.BufferInfo()
         while (recording) {
