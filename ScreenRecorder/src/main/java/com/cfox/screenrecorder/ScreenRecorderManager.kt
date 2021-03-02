@@ -5,10 +5,13 @@ import android.media.MediaCodec
 import android.media.MediaCodecInfo
 import android.media.MediaFormat
 import android.media.projection.MediaProjection
+import android.util.Log
+import com.cfox.screenrecorder.decode.VByteDecoder
 
 class ScreenRecorderManager(private val mediaProjection: MediaProjection) : Runnable {
 
     companion object {
+        private const val TAG = "ScreenRecorderManager"
         private const val WIDTH = 1080
         private const val HEIGHT = 2160
     }
@@ -16,6 +19,8 @@ class ScreenRecorderManager(private val mediaProjection: MediaProjection) : Runn
     private val mediaCodec : MediaCodec
     private val encodeThread : Thread = Thread(this)
     private var recording = false
+
+    private val vByteDecoder = VByteDecoder()
 
     init {
 //        val mediaFormat = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_HEVC, WIDTH, HEIGHT)// h265
@@ -61,9 +66,16 @@ class ScreenRecorderManager(private val mediaProjection: MediaProjection) : Runn
                 byteBuffer?.let {
                     val byteArray = ByteArray(mediaCodecInfo.size)
                     it.get(byteArray)
+
+                    val frames = vByteDecoder.parseBytes(byteArray)
+
+                    frames.forEach { frameInfo ->
+                        Log.d(TAG, "run: frame info : $frameInfo")
+                    }
+
 //                    FrameUtils.writeBytes(byteArray, "output_265.h265")
 //                    FrameUtils.writeString(byteArray,"output_265.txt")
-                    FrameUtils.writeBytes(byteArray, "output_264.h264")
+//                    FrameUtils.writeBytes(byteArray, "output_264.h264")
                     FrameUtils.writeString(byteArray,"output_264.txt")
                 }
                 mediaCodec.releaseOutputBuffer(outputBufferIndex, false)

@@ -6,4 +6,6 @@ public interface BaseParse {
     int getNalRefIdc();
     int getNalUnitType();
     byte[] getBytes();
+    int u(int bitIndex, byte[] frameByte);
+    int Ue(byte[] pBuff);
 }

@@ -98,13 +98,13 @@ class ScreenRecorderManager(context: Context, private val mediaProjection: Media
 
         val type = byteBuffer.get(offset).toInt() and 0x7E shr 1
         when (type) {
-            H265_NAL_VPS -> {
+            H265_NAL_VPS -> {// 32
                 vps_sps_pps_buf = ByteArray(bufferInfo.size)
                 vps_sps_pps_buf?.let {
                     byteBuffer.get(it)
                 }
             }
-            H265_NAL_I -> {
+            H265_NAL_I -> {// 19
                 val bytes = ByteArray(bufferInfo.size)
                 byteBuffer.get(bytes)
 

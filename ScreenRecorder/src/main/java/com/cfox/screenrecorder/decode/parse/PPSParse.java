@@ -5,12 +5,11 @@ import com.cfox.screenrecorder.decode.frame.PPSFrame;
 public class PPSParse extends AbsFrameParse<PPSFrame> {
 
     public PPSParse(BaseParse baseParse) {
-        super(baseParse);
+        super(baseParse, new PPSFrame());
     }
 
-
     @Override
-    public PPSFrame parseFrame() {
-        return null;
+    void onParseFrame(byte[] frameBytes, PPSFrame ppsFrame) {
+
     }
 }

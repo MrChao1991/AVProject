@@ -38,7 +38,8 @@ public class BaserFrameParse implements BaseParse {
     }
 
 
-    int u(int bitIndex, byte[] frameByte) {
+    @Override
+    public int u(int bitIndex, byte[] frameByte) {
         int dwRet = 0;
         for (int i = 0; i < bitIndex; i++) {
             dwRet <<= 1;
@@ -52,7 +53,8 @@ public class BaserFrameParse implements BaseParse {
 
 
 
-    int Ue(byte[] pBuff) {
+    @Override
+    public int Ue(byte[] pBuff) {
         int nZeroNum = 0;
         while (nStartBit < pBuff.length * 8) {
             if ((pBuff[nStartBit / 8] & (0x80 >> (nStartBit % 8))) != 0) {
