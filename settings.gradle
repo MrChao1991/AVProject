@@ -1,3 +1,4 @@
+include ':escamera'
 include ':ScreenRecorder'
 include ':CastScreenPlayApp'
 include ':CastScreenPushApp'

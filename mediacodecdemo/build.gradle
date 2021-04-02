@@ -3,15 +3,15 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    compileSdkVersion deps.build_versions.compileSdkVersion
+    buildToolsVersion deps.build_versions.buildToolsVersion
 
     defaultConfig {
         applicationId "com.cfox.mediacodecdemo"
-        minSdkVersion 22
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion deps.build_versions.minSdkVersion
+        targetSdkVersion deps.build_versions.targetSdkVersion
+        versionCode deps.build_versions.versionCode
+        versionName deps.build_versions.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
