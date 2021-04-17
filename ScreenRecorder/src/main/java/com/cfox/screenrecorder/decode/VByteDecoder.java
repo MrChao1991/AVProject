@@ -1,5 +1,8 @@
 package com.cfox.screenrecorder.decode;
 
+import android.util.Log;
+
+import com.cfox.screenrecorder.FrameUtils;
 import com.cfox.screenrecorder.decode.frame.Frame;
 import com.cfox.screenrecorder.decode.parse.BaserFrameParse;
 import com.cfox.screenrecorder.decode.parse.FrameParse;
@@ -11,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class VByteDecoder {
+    private static final String TAG = "VByteDecoder";
 
     private final HashMap<Integer, FrameParse> mNalUnitTypeParse = new HashMap<>();
     private final BaserFrameParse baseParse = new BaserFrameParse();
@@ -25,18 +29,20 @@ public class VByteDecoder {
 
         int totalSize = bytes.length;
         int startIndex = 0;
-        boolean endParse = true;
-        while (totalSize > 0 && endParse) {
+        boolean endParse = false;
+        while (totalSize > 0 && !endParse) {
             int nextFrameStart = findByFrame(bytes, startIndex + 2 , totalSize);
             if (nextFrameStart > 0 && nextFrameStart < totalSize) {
                 byte[] framesByte = spliteFramesByte(bytes, startIndex, nextFrameStart - startIndex);
+                String frameHex = FrameUtils.INSTANCE.byteToHex(framesByte);
+                Log.d(TAG, "parseBytes: frameHex: " + frameHex);
                 Frame frame = parseFrame(framesByte);
                 if (frame != null) {
                     frames.add(frame);
                 }
                 startIndex = nextFrameStart;
             } else {
-                endParse = false;
+                endParse = true;
             }
         }
 

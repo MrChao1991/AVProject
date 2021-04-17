@@ -30,19 +30,13 @@ object FrameUtils {
     }
 
     fun writeString(byteArray: ByteArray, fileName : String) : String {
-        val sb =  StringBuilder()
+        val hexStr = byteToHex(byteArray)
 
-        for (b in byteArray) {
-            sb.append(HEX_CHAR_TABLE[(b.toInt() and 0xf0) shr  4])
-            sb.append(HEX_CHAR_TABLE[b.toInt() and  0x0f])
-        }
-
-        Log.i(TAG, "writeContent:${sb} ")
         var writer  : FileWriter? = null
         try {
             // 打开一个写文件器，构造函数中的第二个参数true表示以追加形式写文件
             writer = FileWriter("${Environment.getExternalStorageDirectory()}/$fileName", true)
-            writer.write(sb.toString())
+            writer.write(hexStr)
             writer.write("\n")
         } catch (e : IOException) {
             e.printStackTrace()
@@ -53,6 +47,16 @@ object FrameUtils {
                 e.printStackTrace()
             }
         }
+        return hexStr
+    }
+
+    fun byteToHex(byteArray: ByteArray) : String{
+        val sb =  StringBuilder()
+        for (b in byteArray) {
+            sb.append(HEX_CHAR_TABLE[(b.toInt() and 0xf0) shr  4])
+            sb.append(HEX_CHAR_TABLE[b.toInt() and  0x0f])
+        }
+        Log.i(TAG, "byteToHex:===> $sb ")
         return sb.toString()
     }
 

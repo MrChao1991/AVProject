@@ -28,26 +28,26 @@ public class SPSParse extends AbsFrameParse<SPSFrame> {
         //是否是哥伦布编码  0 是 1 不是
         spsFrame.seq_parameter_set_id = Ue(h264);
         if (spsFrame.profile_idc == 100) {
-        //颜色位数
-            spsFrame.chroma_format_idc=Ue(h264);
-            spsFrame.bit_depth_luma_minus8   =Ue(h264);
-            spsFrame.bit_depth_chroma_minus8  =Ue(h264);
-            spsFrame.qpprime_y_zero_transform_bypass_flag=u(1, h264);
-            spsFrame.seq_scaling_matrix_presFrent_flag     =u(1, h264);
+            //颜色位数
+            spsFrame.chroma_format_idc = Ue(h264);
+            spsFrame.bit_depth_luma_minus8 = Ue(h264);
+            spsFrame.bit_depth_chroma_minus8 = Ue(h264);
+            spsFrame.qpprime_y_zero_transform_bypass_flag = u(1, h264);
+            spsFrame.seq_scaling_matrix_presFrent_flag = u(1, h264);
         }
-        spsFrame.log2_max_frame_num_minus4=Ue(h264);
+        spsFrame.log2_max_frame_num_minus4 = Ue(h264);
 
-        spsFrame.pic_order_cnt_type       =Ue(h264);
+        spsFrame.pic_order_cnt_type = Ue(h264);
+        if (spsFrame.pic_order_cnt_type == 0) {
+            spsFrame.log2_max_pic_order_cnt_lsb_minus4 = Ue(h264);
+        }
 
-//        {
-//            spsFrame.log2_max_pic_order_cnt_lsb_minus4=Ue(h264);
-//        }
-        spsFrame.num_ref_frames                      =Ue(h264);
-        spsFrame.gaps_in_frame_num_value_allowed_flag=u(1,     h264);
-        spsFrame.pic_width_in_mbs_minus1             =Ue(h264);
-        spsFrame.pic_height_in_map_units_minus1      =Ue(h264);
-        spsFrame.width=(spsFrame.pic_width_in_mbs_minus1       +1)*16;
-        spsFrame.height=(spsFrame.pic_height_in_map_units_minus1+1)*16;
+        spsFrame.max_num_ref_frames = Ue(h264);
+        spsFrame.gaps_in_frame_num_value_allowed_flag = u(1, h264);
+        spsFrame.pic_width_in_mbs_minus1 = Ue(h264);
+        spsFrame.pic_height_in_map_units_minus1 = Ue(h264);
+        spsFrame.width = (spsFrame.pic_width_in_mbs_minus1 + 1) * 16;
+        spsFrame.height = (spsFrame.pic_height_in_map_units_minus1 + 1) * 16;
 
     }
 }

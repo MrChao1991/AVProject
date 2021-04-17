@@ -35,7 +35,7 @@ public class SPSFrame extends Frame {
 
     public int log2_max_pic_order_cnt_lsb_minus4;
 
-    public int num_ref_frames;
+    public int max_num_ref_frames;
     public int gaps_in_frame_num_value_allowed_flag;
     public int pic_width_in_mbs_minus1;
     public int pic_height_in_map_units_minus1;
@@ -64,7 +64,7 @@ public class SPSFrame extends Frame {
                 ", log2_max_frame_num_minus4=" + log2_max_frame_num_minus4 +
                 ", pic_order_cnt_type=" + pic_order_cnt_type +
                 ", log2_max_pic_order_cnt_lsb_minus4=" + log2_max_pic_order_cnt_lsb_minus4 +
-                ", num_ref_frames=" + num_ref_frames +
+                ", num_ref_frames=" + max_num_ref_frames +
                 ", gaps_in_frame_num_value_allowed_flag=" + gaps_in_frame_num_value_allowed_flag +
                 ", pic_width_in_mbs_minus1=" + pic_width_in_mbs_minus1 +
                 ", pic_height_in_map_units_minus1=" + pic_height_in_map_units_minus1 +
