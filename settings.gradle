@@ -1,3 +1,5 @@
+include ':espermission'
+include ':audiosimpleclip'
 include ':escamera'
 include ':ScreenRecorder'
 include ':CastScreenPlayApp'
