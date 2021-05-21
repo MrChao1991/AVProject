@@ -70,6 +70,8 @@ class ScreenRecorderManager(context: Context, private val mediaProjection: Media
                 "-display", WIDTH, HEIGHT, 1, DisplayManager.VIRTUAL_DISPLAY_FLAG_PUBLIC, surface, null, null)
         mediaCodec.start()
         val mediaCodecInfo = MediaCodec.BufferInfo()
+
+
         while (recording) {
             val outputBufferIndex = mediaCodec.dequeueOutputBuffer(mediaCodecInfo, 10000)
             if (outputBufferIndex >=0) {
