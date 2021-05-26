@@ -53,6 +53,9 @@ class MainActivity : AppCompatActivity() {
                 val mixOutVideoPath = File(Environment.getExternalStorageDirectory(), "mixVideo.mp3").absolutePath
                 AudioClipTools().clip(mixMusicPath, mixOutMusicPath, 60 * 1000 * 1000, 70 * 1000 * 1000)
                 AudioClipTools().clip(mixVideoPath, mixOutVideoPath, 60 * 1000 * 1000, 70 * 1000 * 1000)
+                val mixOutPath = File(Environment.getExternalStorageDirectory(), "mixOut.mp3").absolutePath
+
+                AudioMixTools().mixAudio(mixOutMusicPath,mixOutVideoPath, mixOutPath,50, 100)
 
                 Log.d(TAG, "startMix: clip end ===>")
             } catch (e: Exception) {

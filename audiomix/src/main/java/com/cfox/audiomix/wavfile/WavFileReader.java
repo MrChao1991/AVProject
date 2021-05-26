@@ -67,11 +67,7 @@ public class WavFileReader {
         }
 
         try {
-            int nbytes = mDataStream.read(buffer, offset, count);
-            if (nbytes == -1) {
-                return 0;
-            }
-            return nbytes;
+            return mDataStream.read(buffer, offset, count);
         } catch (IOException e) {
             e.printStackTrace();
         }
