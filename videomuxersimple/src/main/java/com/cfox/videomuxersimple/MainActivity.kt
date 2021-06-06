@@ -9,6 +9,9 @@ import android.view.View
 import android.widget.SeekBar
 import android.widget.VideoView
 import com.cfox.espermission.EsPermissions
+import com.cfox.videomuxersimple.muxer.AVMuxer
+import com.cfox.videomuxersimple.muxer.VideoExtractorManager
+import com.cfox.videomuxersimple.muxer.VideoMuxerInfo
 import com.jaygoo.widget.RangeSeekBar
 import java.io.File
 import java.io.FileInputStream
@@ -21,6 +24,8 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "MainActivity"
     }
+
+    var duration : Long = 0L
 
     private val videoView by lazy {
         findViewById<VideoView>(R.id.videoView)
@@ -70,7 +75,7 @@ class MainActivity : AppCompatActivity() {
             videoParam.height = it.videoHeight
             videoView.layoutParams = videoParam
 
-            val duration = it.duration / 1000
+            duration = it.duration / 1000L
             rangeSeekBar.setRange(0f, duration.toFloat())
             rangeSeekBar.setValue(0f , duration.toFloat())
             rangeSeekBar.setOnRangeChangedListener { view, min, max, isFromUser ->
@@ -112,6 +117,20 @@ class MainActivity : AppCompatActivity() {
         val from = FileInputStream(assetFileDescriptor.fileDescriptor).channel
         val to = FileOutputStream(path).channel
         from.transferTo(assetFileDescriptor.startOffset, assetFileDescriptor.length, to)
+
+    }
+
+    fun muxerVideo(view: View) {
+        val videoPath = File(Environment.getExternalStorageDirectory(), "video.mp4").absolutePath
+        val outVideoPath = File(Environment.getExternalStorageDirectory(), "out_video.mp4").absolutePath
+
+        val avMuxer = AVMuxer(outVideoPath)
+
+        val videoMuxerInfo = VideoMuxerInfo(videoPath, 0L, duration * 1000 * 1000 / 2)
+        val videoExtractorManager = VideoExtractorManager(avMuxer, videoMuxerInfo)
+
+        avMuxer.start()
+        videoExtractorManager.start()
 
     }
 }
