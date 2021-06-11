@@ -1,8 +1,6 @@
 package com.cfox.videomuxersimple.muxer
 
-import android.media.MediaCodec
 import android.util.Log
-import java.nio.ByteBuffer
 
 class VideoExtractorManager(val muxer: AVMuxer, videoMuxerInfo : VideoMuxerInfo ) : Runnable {
 
@@ -27,10 +25,11 @@ class VideoExtractorManager(val muxer: AVMuxer, videoMuxerInfo : VideoMuxerInfo 
 
         while (true) {
             val data = extractor.readSimpleMediaData()
-            if (data is Data.MediaData) {
+            if (data is Data.VideoData) {
                 muxer.writeSimpleData(muxerIndex, data.buffer, data.info)
             } else if (data is Data.EndData) {
                 extractor.release()
+                Log.d(TAG, "run: video muxer release ---> ")
                 muxer.release()
                 break
             }

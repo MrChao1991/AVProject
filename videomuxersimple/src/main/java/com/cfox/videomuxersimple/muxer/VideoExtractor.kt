@@ -25,7 +25,7 @@ class VideoExtractor(val manager: VideoExtractorManager, val videoMuxerInfo : Vi
         format = extractor.getTrackFormat(trackIndex)
         extractor.seekTo(videoMuxerInfo.startTime, MediaExtractor.SEEK_TO_CLOSEST_SYNC)
         maxBufferSize = format.getInteger(MediaFormat.KEY_MAX_INPUT_SIZE)
-        buffer = ByteBuffer.allocate(maxBufferSize)
+        buffer = ByteBuffer.allocateDirect(maxBufferSize)
         info = MediaCodec.BufferInfo()
     }
 
@@ -57,7 +57,7 @@ class VideoExtractor(val manager: VideoExtractorManager, val videoMuxerInfo : Vi
 //        manager.writeSimpleData(buffer, info)
         extractor.advance()
 
-        return Data.MediaData(buffer, info, videoMuxerInfo.startTime)
+        return Data.VideoData(buffer, info, videoMuxerInfo.startTime)
     }
 
     fun release() {
@@ -85,9 +85,3 @@ class VideoExtractor(val manager: VideoExtractorManager, val videoMuxerInfo : Vi
 
 class VideoMuxerInfo(val videoPath: String, val startTime: Long, val endTime: Long) {}
 
-sealed class Data {
-
-    class EmptyData() : Data()
-    class EndData() : Data()
-    class MediaData(val buffer: ByteBuffer, val info : MediaCodec.BufferInfo, val startTime: Long) : Data()
-}

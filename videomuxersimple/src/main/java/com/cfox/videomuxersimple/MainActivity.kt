@@ -9,9 +9,7 @@ import android.view.View
 import android.widget.SeekBar
 import android.widget.VideoView
 import com.cfox.espermission.EsPermissions
-import com.cfox.videomuxersimple.muxer.AVMuxer
-import com.cfox.videomuxersimple.muxer.VideoExtractorManager
-import com.cfox.videomuxersimple.muxer.VideoMuxerInfo
+import com.cfox.videomuxersimple.muxer.*
 import com.jaygoo.widget.RangeSeekBar
 import java.io.File
 import java.io.FileInputStream
@@ -121,16 +119,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun muxerVideo(view: View) {
+        val musicPath = File(Environment.getExternalStorageDirectory(), "music.mp3").absolutePath
         val videoPath = File(Environment.getExternalStorageDirectory(), "video.mp4").absolutePath
         val outVideoPath = File(Environment.getExternalStorageDirectory(), "out_video.mp4").absolutePath
 
         val avMuxer = AVMuxer(outVideoPath)
 
-        val videoMuxerInfo = VideoMuxerInfo(videoPath, 0L, duration * 1000 * 1000 / 2)
+        val dur = duration * 1000 * 1000 / 10
+
+        val videoMuxerInfo = VideoMuxerInfo(videoPath, 0L, dur * 3)
         val videoExtractorManager = VideoExtractorManager(avMuxer, videoMuxerInfo)
+
+        Log.d(TAG, "muxerVideo:  dur:${dur}")
+
+        val auidoMuxerInfo1 = AudioMuxerInfo(videoPath, 100,0, dur * 3)
+        val auidoMuxerInfo2 = AudioMuxerInfo(musicPath, 70, dur * 2, dur * 3)
+
+        val audioExtractorManager = AudioExtractorManager(avMuxer, auidoMuxerInfo1, mutableListOf(auidoMuxerInfo2))
 
         avMuxer.start()
         videoExtractorManager.start()
+        audioExtractorManager.start()
 
     }
 }

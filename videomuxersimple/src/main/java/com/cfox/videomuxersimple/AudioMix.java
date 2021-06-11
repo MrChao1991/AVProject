@@ -2,9 +2,12 @@ package com.cfox.videomuxersimple;
 
 public class AudioMix {
 
-
-    public static byte[] mix(byte[] buffer1, int vol1, byte[] buffer2, int vol2) {
-
+    private static float normalizeVolume(int volume) {
+        return volume / 100f * 1;
+    }
+    public static byte[] mix(byte[] buffer1, int audioVolume1, byte[] buffer2, int audioVolume2) {
+        float vol1 = normalizeVolume(audioVolume1);
+        float vol2 = normalizeVolume(audioVolume2);
         if (buffer1.length !=buffer2.length) {
             throw new RuntimeException("");
         }

@@ -11,6 +11,7 @@ class AVMuxer(outPath: String)  {
         private const val TAG = "AVMuxer"
     }
 
+    private var releaseIndex = 0
     val muxer : MediaMuxer = MediaMuxer(outPath, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4)
 
     fun addTrack(format: MediaFormat): Int {
@@ -28,6 +29,11 @@ class AVMuxer(outPath: String)  {
 
 
     fun release() {
-        muxer.release()
+        releaseIndex++
+        if (releaseIndex == 2) {
+            Log.d(TAG, "release: muxer release --->")
+            muxer.stop()
+            muxer.release()
+        }
     }
 }
