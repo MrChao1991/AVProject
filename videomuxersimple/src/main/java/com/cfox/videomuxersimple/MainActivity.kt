@@ -10,6 +10,9 @@ import android.widget.SeekBar
 import android.widget.VideoView
 import com.cfox.espermission.EsPermissions
 import com.cfox.videomuxersimple.muxer.*
+import com.cfox.videomuxersimple.splicevideo.SMuxer
+import com.cfox.videomuxersimple.splicevideo.SVExtractor
+import com.cfox.videomuxersimple.splicevideo.SpliceManager
 import com.jaygoo.widget.RangeSeekBar
 import java.io.File
 import java.io.FileInputStream
@@ -31,14 +34,6 @@ class MainActivity : AppCompatActivity() {
 
     private val rangeSeekBar by lazy {
         findViewById<RangeSeekBar>(R.id.rangeSeekBar)
-    }
-
-    private val musicVolume by lazy {
-        findViewById<SeekBar>(R.id.musicSeekBar)
-    }
-
-    private val videoVolume by lazy {
-        findViewById<SeekBar>(R.id.videoView)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,10 +87,12 @@ class MainActivity : AppCompatActivity() {
         Thread {
             val musicPath = File(Environment.getExternalStorageDirectory(), "music.mp3").absolutePath
             val videoPath = File(Environment.getExternalStorageDirectory(), "video.mp4").absolutePath
+            val video2Path = File(Environment.getExternalStorageDirectory(), "video_2.mp4").absolutePath
 
             try {
                 copyAssets("music.mp3", musicPath)
                 copyAssets("input.mp4", videoPath)
+                copyAssets("input2.mp4", video2Path)
 
                 Log.d(TAG, "copyFile: =====>  end")
 
@@ -140,6 +137,20 @@ class MainActivity : AppCompatActivity() {
         avMuxer.start()
         videoExtractorManager.start()
         audioExtractorManager.start()
+
+    }
+
+    fun spliceVideo(view: View) {
+        val videoPath = File(Environment.getExternalStorageDirectory(), "video.mp4").absolutePath
+        val video2Path = File(Environment.getExternalStorageDirectory(), "video_2.mp4").absolutePath
+        val outVideoPath = File(Environment.getExternalStorageDirectory(), "s_out_video.mp4").absolutePath
+
+        val videoExtractor1 = SVExtractor(videoPath)
+        val videoExtractor2 = SVExtractor(video2Path)
+        val muxer = SMuxer(outVideoPath)
+
+        val sm = SpliceManager(muxer, videoExtractor1, videoExtractor2)
+        sm.start()
 
     }
 }
