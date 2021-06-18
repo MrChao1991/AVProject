@@ -9,7 +9,7 @@ import com.cfox.camera.mode.CameraModeManager;
 import com.cfox.camera.mode.PhotoMode;
 import com.cfox.camera.mode.VideoMode;
 
-public class EsCameraManagerImpl implements EsCameraManager {
+class EsCameraManagerImpl implements EsCameraManager {
 
     private final CameraModeManager mCameraModule;
     private final ConfigWrapper mConfigWrapper;

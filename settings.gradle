@@ -1,3 +1,4 @@
+include ':yuvcamera'
 include ':videomuxersimple'
 include ':audiomix'
 include ':espermission'
