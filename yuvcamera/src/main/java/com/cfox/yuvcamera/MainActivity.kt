@@ -2,6 +2,7 @@ package com.cfox.yuvcamera
 
 import android.Manifest
 import android.graphics.*
+import android.media.Image
 import android.os.Bundle
 import android.util.Size
 import android.widget.ImageView
@@ -85,11 +86,15 @@ class MainActivity : AppCompatActivity(), PreviewImageReader.PreviewListener {
 //                .addImageReaderProvider(new CaptureImageReader())
     }
 
-    override fun onPreview(y: ByteArray, u: ByteArray, v: ByteArray, stride: Int) {
-        val bitmap = YUVTools.i420ToBitmap(y, 1440, 1080)//ImageUtils.yuvToBitmap(y, ImageFormat.YUY2, 1440, 1080)
-
+    override fun onPreview(image: Image) {
+        val width = 1440
+        val height = 1080
+        val data = ImageUtil.getBytesFromImageAsType(image, 2)
+        val nv21 = ByteArray(data.size)
+        YUVTools.rotateSP(data, nv21, width, height, 90)
+        val bitmap = ImageUtils.yuvToBitmap(nv21, ImageFormat.NV21, height, width)
         yView.post {
-            bitmap?.let {
+            bitmap.let {
                 yView.setImageBitmap(it)
             }
         }

@@ -1,9 +1,14 @@
 package com.cfox.yuvcamera;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ImageFormat;
+import android.graphics.Rect;
+import android.graphics.YuvImage;
 import android.media.Image;
 import android.media.ImageReader;
 
+import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 
 public class YUVTools {
@@ -246,15 +251,15 @@ public class YUVTools {
     /******************************* YUV420转换Bitmap算法 *******************************/
 
     // 此方法虽然是官方的，但是耗时是下面方法的两倍
-//    public static Bitmap nv21ToBitmap(byte[] data, int w, int h) {
-//        final YuvImage image = new YuvImage(data, ImageFormat.NV21, w, h, null);
-//        ByteArrayOutputStream os = new ByteArrayOutputStream(data.length);
-//        if (image.compressToJpeg(new Rect(0, 0, w, h), 100, os)) {
-//            byte[] tmp = os.toByteArray();
-//            return BitmapFactory.decodeByteArray(tmp, 0, tmp.length);
-//        }
-//        return null;
-//    }
+    public static Bitmap nv21ToBitmap1(byte[] data, int w, int h) {
+        final YuvImage image = new YuvImage(data, ImageFormat.NV21, w, h, null);
+        ByteArrayOutputStream os = new ByteArrayOutputStream(data.length);
+        if (image.compressToJpeg(new Rect(0, 0, w, h), 100, os)) {
+            byte[] tmp = os.toByteArray();
+            return BitmapFactory.decodeByteArray(tmp, 0, tmp.length);
+        }
+        return null;
+    }
 
     public static Bitmap nv12ToBitmap(byte[] data, int w, int h) {
         return spToBitmap(data, w, h, 0, 1);
