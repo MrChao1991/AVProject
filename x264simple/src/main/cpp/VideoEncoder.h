@@ -6,7 +6,8 @@
 #define AVPROJECT_VIDEOENCODER_H
 #include <inttypes.h>
 #include <jni.h>
-#include <x264-lib.h>
+#include <x264.h>
+#include "JavaCallHelper.h"
 
 class VideoEncoder {
 
@@ -31,5 +32,7 @@ private:
     x264_t *videoCodec = 0;
 
     x264_picture_t *pic_in = 0;
+public:
+    JavaCallHelper *javaHelper = 0;
 };
 #endif //AVPROJECT_VIDEOENCODER_H

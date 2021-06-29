@@ -31,7 +31,7 @@ void VideoEncoder::setVideoInfo(int width, int height, int fps, int bitrate) {
     x264_param_t param;
 
     // 设置编码速度
-    x264_param_default_preset(&param, x264_preset_names[0], x264_tune_names[7]);
+    x264_param_default_preset(&param, "ultrafast", "zerolatency");
     // 编码等级
     param.i_level_idc = 32;
     // 选择显示格式
@@ -40,7 +40,7 @@ void VideoEncoder::setVideoInfo(int width, int height, int fps, int bitrate) {
     param.i_height = height;
 
     // 设置B frame
-    param.i_bframe = 0;
+    param.i_bframe = 15;
     // 设置cpu 编码方式
     param.rc.i_rc_method = X264_RC_ABR;
     // k 为单位
@@ -61,21 +61,20 @@ void VideoEncoder::setVideoInfo(int width, int height, int fps, int bitrate) {
     // I 帧间隔  2s 一个I帧
     param.i_keyint_max = fps * 2;
 
-    // 是否复s和pps放在每个关键帧的前面 该参数设置是让每个关键帧(I帧)都附带sps/pps。
-    param.b_repeat_headers = 0;
+    // 是否复sps和pps放在每个关键帧的前面 该参数设置是让每个关键帧(I帧)都附带sps/pps。
+    param.b_repeat_headers = 1;
 
     // 设置线程
     param.i_threads = 1;
 
-    x264_param_apply_profile(&param, x264_profile_names[0]);
-
+    x264_param_apply_profile(&param, "high");
 
     videoCodec = x264_encoder_open(&param);
 
     // 容器
     pic_in = new x264_picture_t;
     // 设置初始化大小， 容器大小确定
-    x264_picture_alloc(pic_in, X264_CSP_I420, width, height)
+    x264_picture_alloc(pic_in, X264_CSP_I420, width, height);
 
 }
 
@@ -105,21 +104,18 @@ void VideoEncoder::encodeData(int8_t *data) {
 
     if (pi_nal > 0) {
         for (int i = 0; i < pi_nal; ++i) {
-            LOGE("输出索引:  %d  输出长度 %d",i,pi_nal);
-
-            pp_nals[i].i_payload;
-            pp_nals[i].p_payload;
-//
+            LOGE("输出索引:  %d  输出长度 %d type:%d",i,pi_nal, pp_nals[i].i_type);
             if (pp_nals[i].i_type == NAL_SPS) {
-//        sps    发送  1   一起发送
-
+                LOGE("video frame type : psp========>");
             }  else if (pp_nals[i].i_type == NAL_PPS) {
-//        到了pps   需要 1  不需要 2
-
-            } else{
-                //关键帧、非关键帧
-//                sendFrame(pp_nals[i].i_type,pp_nals[i].i_payload,pp_nals[i].p_payload);
+                LOGE("video frame type : pps========>");
             }
+
+//            pp_nals[i].i_payload; 编码数据长度
+//            pp_nals[i].p_payload; 编码数据
+
+
+            javaHelper->postH264(reinterpret_cast<char *>(pp_nals[i].p_payload), pp_nals[i].i_payload);
         }
     }
 

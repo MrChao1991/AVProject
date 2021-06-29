@@ -14,6 +14,7 @@ import com.cfox.camera.capture.PhotoCapture
 import com.cfox.camera.request.FlashState
 import com.cfox.camera.request.PreviewRequest
 import com.cfox.espermission.EsPermissions
+import com.cfox.x264simple.x264.x264Lib
 import java.util.*
 
 class MainActivity : AppCompatActivity(), PreviewImageReader.PreviewListener {
@@ -21,6 +22,8 @@ class MainActivity : AppCompatActivity(), PreviewImageReader.PreviewListener {
 
     private var esCameraManager : EsCameraManager ? = null
     private var photoCapture : PhotoCapture ? = null
+
+    private var x264 :x264Lib ? = null
 
     private val previewTextureView by lazy {
         findViewById<AutoFitTextureView>(R.id.preview_texture_view)
@@ -91,23 +94,21 @@ class MainActivity : AppCompatActivity(), PreviewImageReader.PreviewListener {
         val data = ImageUtil.getBytesFromImageAsType(image, 2)
         val nv21 = ByteArray(data.size)
         YUVTools.rotateSP(data, nv21, width, height, 90)
+
+        if (x264 == null) {
+            x264 = x264Lib()
+            x264?.native_init()
+            x264?.native_video_encode_info(1080, 1440, 30, 1440* 1080 * 5)
+        }
+
+        x264?.native_push_yuv_data(nv21)
+
+
         val bitmap = ImageUtils.yuvToBitmap(nv21, ImageFormat.NV21, height, width)
         yView.post {
             bitmap.let {
                 yView.setImageBitmap(it)
             }
-        }
-    }
-
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-
-    companion object {
-        // Used to load the 'native-lib' library on application startup.
-        init {
-            System.loadLibrary("x264-lib")
         }
     }
 }
