@@ -1,7 +1,3 @@
-//
-// Created by chao.ma on 6/29/21.
-//
-
 #include "JavaCallHelper.h"
 
 JavaCallHelper::JavaCallHelper(JavaVM *javaVm, JNIEnv *_env, jobject &_jobj) : javaVM(javaVm), env(_env) {

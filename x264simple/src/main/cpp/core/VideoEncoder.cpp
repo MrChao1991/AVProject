@@ -3,7 +3,7 @@
 //
 #include <cstring>
 #include "VideoEncoder.h"
-#include "nlog.h"
+#include "../nlog.h"
 
 VideoEncoder::VideoEncoder() {
 

@@ -6,6 +6,6 @@
 #define CAMERA1PUSH_MANIULOG_H
 
 #include <android/log.h>
-#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR,"rtmp",__VA_ARGS__)
+#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR,"x264",__VA_ARGS__)
 
 #endif //CAMERA1PUSH_MANIULOG_H

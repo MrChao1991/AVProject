@@ -1,7 +1,7 @@
 #include <jni.h>
 #include <string>
 #include "nlog.h"
-#include "VideoEncoder.h"
+#include "core/VideoEncoder.h"
 
 
 VideoEncoder *videoEncoder = nullptr;

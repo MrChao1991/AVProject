@@ -18,7 +18,6 @@ public:
     void setVideoInfo(int width, int height, int fps, int bitrate);
 
     void encodeData(int8_t *data);
-
 private:
     int mWidth;
     int mHeight;
