@@ -15,7 +15,9 @@ public:
     VideoEncoder();
     ~VideoEncoder();
 
-    void setVideoInfo(int width, int height, int fps, int bitrate);
+    void initEncoder(int width, int height, int fps, int bitrate, int bFrame, int iFrameInterval, int level_idc, const char *profileIdc);
+
+    void start();
 
     void encodeData(int8_t *data);
 private:
@@ -31,6 +33,8 @@ private:
     x264_t *videoCodec = 0;
 
     x264_picture_t *pic_in = 0;
+    //x264 参数
+    x264_param_t param;
 public:
     JavaCallHelper *javaHelper = 0;
 };

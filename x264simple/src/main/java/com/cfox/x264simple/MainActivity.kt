@@ -14,7 +14,7 @@ import com.cfox.camera.capture.PhotoCapture
 import com.cfox.camera.request.FlashState
 import com.cfox.camera.request.PreviewRequest
 import com.cfox.espermission.EsPermissions
-import com.cfox.x264simple.x264.x264Lib
+import com.cfox.vsencoder.*
 import java.util.*
 
 class MainActivity : AppCompatActivity(), PreviewImageReader.PreviewListener {
@@ -23,7 +23,8 @@ class MainActivity : AppCompatActivity(), PreviewImageReader.PreviewListener {
     private var esCameraManager : EsCameraManager ? = null
     private var photoCapture : PhotoCapture ? = null
 
-    private var x264 :x264Lib ? = null
+    private lateinit var vsEncoder  : VSEncoder
+
 
     private val previewTextureView by lazy {
         findViewById<AutoFitTextureView>(R.id.preview_texture_view)
@@ -48,6 +49,34 @@ class MainActivity : AppCompatActivity(), PreviewImageReader.PreviewListener {
                 photoCapture = capture
             }
         }
+
+        val format = VSFormat(1080, 1440)
+        format.b_frame = 5
+        format.fps = 30
+        format.bitrate = (format.width * format.height * 2.5).toInt()
+        format.i_frame_interval = 2
+        format.profile_idc = PROFILE_IDC.HIGH
+        format.level_idc = LEVEL_IDC.HD_720P_31
+        vsEncoder = VSEncoder()
+        vsEncoder.initEncoder(format)
+        vsEncoder.setListener(object: VSEncoderListener {
+
+            override fun onStartEncoder() {
+
+            }
+
+            override fun onFail(code: Int) {
+
+            }
+
+            override fun onEncodeFrame(byteArray: ByteArray) {
+                FileUtils.writeBytes(byteArray)
+                FileUtils.writeContent(byteArray)
+            }
+
+        })
+
+        vsEncoder.start()
 
         startPreview()
     }
@@ -95,13 +124,9 @@ class MainActivity : AppCompatActivity(), PreviewImageReader.PreviewListener {
         val nv21 = ByteArray(data.size)
         YUVTools.rotateSP(data, nv21, width, height, 90)
 
-        if (x264 == null) {
-            x264 = x264Lib()
-            x264?.native_init()
-            x264?.native_video_encode_info(1080, 1440, 30, 1440* 1080 * 5)
+        if (vsEncoder.isAvailable()) {
+            vsEncoder.encodeYUVData(nv21)
         }
-
-        x264?.native_push_yuv_data(nv21)
 
 
         val bitmap = ImageUtils.yuvToBitmap(nv21, ImageFormat.NV21, height, width)
@@ -110,5 +135,10 @@ class MainActivity : AppCompatActivity(), PreviewImageReader.PreviewListener {
                 yView.setImageBitmap(it)
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        vsEncoder.release()
     }
 }

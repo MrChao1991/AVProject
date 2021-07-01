@@ -1,3 +1,4 @@
+include ':VSEncoder'
 include ':x264simple'
 include ':yuvcamera'
 include ':videomuxersimple'
