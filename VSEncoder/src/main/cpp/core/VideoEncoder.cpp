@@ -48,7 +48,7 @@ void VideoEncoder::encodeData(int8_t *data) {
 
 //            pp_nals[i].i_payload; 编码数据长度
 //            pp_nals[i].p_payload; 编码数据
-            javaHelper->encodeH264(reinterpret_cast<char *>(pp_nals[i].p_payload), pp_nals[i].i_payload);
+            javaHelper->encodeH264(reinterpret_cast<char *>(pp_nals[i].p_payload), pp_nals[i].i_payload, pp_nals[i].i_type);
         }
     }
 
@@ -109,7 +109,7 @@ void VideoEncoder::initEncoder(int width, int height, int fps, int bitrate, int 
 
     // I 帧间隔  2s 一个I帧
 //    param.i_keyint_max = fps * 2;
-    param.i_keyint_min = iFrameInterval;
+    param.i_keyint_min = fps * iFrameInterval;
 
     // 是否复sps和pps放在每个关键帧的前面 该参数设置是让每个关键帧(I帧)都附带sps/pps。
     param.b_repeat_headers = 1;
@@ -124,10 +124,12 @@ void VideoEncoder::initEncoder(int width, int height, int fps, int bitrate, int 
     // 设置初始化大小， 容器大小确定
     x264_picture_alloc(pic_in, X264_CSP_I420, width, height);
 
+    LOGE("init x264 success .....");
     javaHelper->callStatus(1);
 }
 
 void VideoEncoder::start() {
     videoCodec = x264_encoder_open(&param);
+    LOGE("start encoder success .......");
     javaHelper->callStatus(2);
 }

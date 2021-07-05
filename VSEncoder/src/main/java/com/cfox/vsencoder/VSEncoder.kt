@@ -29,6 +29,10 @@ class VSEncoder {
         ven.start()
     }
 
+    fun stop() {
+        ven.stop()
+    }
+
     fun encodeYUVData(data : ByteArray) {
         ven.encodeYUVData(data)
     }

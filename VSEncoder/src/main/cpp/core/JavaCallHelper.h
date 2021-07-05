@@ -12,7 +12,7 @@ class JavaCallHelper {
 public:
     JavaCallHelper(JavaVM *javaVm, JNIEnv *env, jobject &_jobj);
 
-    void encodeH264(char *data, int length);
+    void encodeH264(char *data, int length, int type);
 
     void callStatus(int code);
 
